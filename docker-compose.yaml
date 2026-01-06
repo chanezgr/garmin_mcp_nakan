@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  garmin-mcp-nakan:
+    image: garmin-mcp-nakan:latest
+    container_name: garmin-mcp-nakan
+    environment:
+      - SERVER_TRANSPORT=http
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+    volumes:
+      - ~/.gc_auth:/root/.garminconnect
+      - ~/.gc_auth/garminconnect_base64:/root/.garminconnect_base64
+    ports:
+      - "8000:8000" 
+    networks:
+      - garmin_network
+    restart: unless-stopped
+
+  nginx:
+    image: docker.io/library/nginx:latest
+    container_name: nginx-garmin
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - garmin-mcp-nakan
+    networks:
+      - garmin_network
+    restart: unless-stopped
+networks:
+  garmin_network:
+    driver: bridge

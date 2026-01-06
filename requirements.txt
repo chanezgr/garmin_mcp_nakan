@@ -1,0 +1,5 @@
+fastmcp==2.14.2
+anyio
+garth==0.5.2
+garminconnect==0.2.25
+requests==2.32.3
