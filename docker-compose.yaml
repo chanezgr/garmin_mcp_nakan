@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   garmin-mcp-nakan:
-    image: garmin-mcp-nakan:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: garmin-mcp-nakan
     environment:
       - SERVER_TRANSPORT=http
